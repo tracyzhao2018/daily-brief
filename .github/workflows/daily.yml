@@ -1,9 +1,9 @@
 name: 每日简报构建与发布
 
-# 每 15 分钟自动构建并发布到 GitHub Pages（错开整点，降低被调度器丢弃的概率）
+# 每小时自动构建并发布到 GitHub Pages（错开整点，降低被调度器丢弃的概率）
 on:
   schedule:
-    - cron: "3,18,33,48 * * * *"
+    - cron: "17 * * * *"
   workflow_dispatch:
 
 permissions:

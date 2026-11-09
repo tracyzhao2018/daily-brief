@@ -1695,7 +1695,7 @@ JS = u"""
   tickTime();
   setInterval(tickTime, 30000);
 
-  // 自动检测新版本：云端每 15 分钟构建，页面无需手动刷新
+  // 自动检测新版本：云端每小时构建，页面无需手动刷新
   var lastTag = null, checking = false;
   function reloadKeepState() {
     try {
@@ -1874,7 +1874,7 @@ def render_html(columns, latest, counts, stamp, stamp_full, dt, focus, now_ts):
       <div class="num">__DAY__</div>
       <div class="meta">
         <b>__YEAR__年__MONTH__月</b>
-        <i>__WEEKDAY__ ｜ 每 15 分钟自动更新</i><br>
+        <i>__WEEKDAY__ ｜ 每小时自动更新</i><br>
         <i id="liveStamp" data-ts="__NOWTS__">更新于 __STAMP__</i>
       </div>
     </div>
@@ -1913,7 +1913,7 @@ def render_html(columns, latest, counts, stamp, stamp_full, dt, focus, now_ts):
 
 <footer>
   <div class="foot-grid">
-    <div><b>飞飞 · 每日资讯简报</b><br>更新于 __STAMP__ ｜ 每 15 分钟自动更新 ｜ 共 11 个栏目 / __TOTAL__ 条</div>
+    <div><b>飞飞 · 每日资讯简报</b><br>更新于 __STAMP__ ｜ 每小时自动更新 ｜ 共 11 个栏目 / __TOTAL__ 条</div>
     <div><b>数据来源</b><br>__SOURCES__</div>
   </div>
   <p class="foot-note">说明：本页由定时任务自动构建，内容为公开信息聚合，不构成投资建议。栏目配图为示意图片，文字与链接均指向原始发布页面；如来源更新延迟或暂时不可用，将展示最近一次成功获取的内容。</p>
