@@ -1,0 +1,60 @@
+name: 每日简报构建与发布
+
+# 每 15 分钟自动构建并发布到 GitHub Pages
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # 缓存抓取结果与原文配图缓存，供本次抓取失败/重复抓取时复用
+      - name: 恢复抓取缓存
+        uses: actions/cache@v4
+        with:
+          path: |
+            data/
+          key: daily-brief-cache-${{ github.run_id }}
+          restore-keys: |
+            daily-brief-cache-
+
+      - name: 构建静态站点
+        run: python build_site.py
+
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+
+      - name: 上传站点产物
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: 发布到 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

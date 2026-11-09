@@ -1,0 +1,6 @@
+__pycache__/
+site/img/
+site/index.html
+site/.nojekyll
+data/cache.json
+data/img_cache.json
