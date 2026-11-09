@@ -1856,7 +1856,7 @@ def render_html(columns, latest, counts, stamp, stamp_full, dt, focus, now_ts):
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="description" content="每日资讯简报：要闻、军事台海、财经、股票、科技、法律、三农、教育、江苏本地、文化、健康，自动聚合公开信息。" />
-<title>翼览 · 每日资讯简报 | __DATE_DOT__</title>
+<title>飞飞 · 每日资讯简报 | __DATE_DOT__</title>
 <style>__CSS__</style>
 </head>
 <body>
@@ -1864,9 +1864,9 @@ def render_html(columns, latest, counts, stamp, stamp_full, dt, focus, now_ts):
 <header class="masthead">
   <div class="mast-top">
     <div class="brand">
-      <div class="brand-mark">翼</div>
+      <div class="brand-mark">飞</div>
       <div>
-        <h1>翼览 · 每日资讯简报</h1>
+        <h1>飞飞 · 每日资讯简报</h1>
         <p>Daily Briefing</p>
       </div>
     </div>
@@ -1913,7 +1913,7 @@ def render_html(columns, latest, counts, stamp, stamp_full, dt, focus, now_ts):
 
 <footer>
   <div class="foot-grid">
-    <div><b>翼览 · 每日资讯简报</b><br>更新于 __STAMP__ ｜ 每 15 分钟自动更新 ｜ 共 11 个栏目 / __TOTAL__ 条</div>
+    <div><b>飞飞 · 每日资讯简报</b><br>更新于 __STAMP__ ｜ 每 15 分钟自动更新 ｜ 共 11 个栏目 / __TOTAL__ 条</div>
     <div><b>数据来源</b><br>__SOURCES__</div>
   </div>
   <p class="foot-note">说明：本页由定时任务自动构建，内容为公开信息聚合，不构成投资建议。栏目配图为示意图片，文字与链接均指向原始发布页面；如来源更新延迟或暂时不可用，将展示最近一次成功获取的内容。</p>
