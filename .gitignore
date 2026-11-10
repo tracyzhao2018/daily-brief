@@ -4,3 +4,7 @@ site/index.html
 site/.nojekyll
 data/cache.json
 data/img_cache.json
+data/trigger.log
+data/schedule_watch.log
+trigger_build.ps1
+install_scheduled_task.ps1

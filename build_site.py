@@ -1695,7 +1695,46 @@ JS = u"""
   tickTime();
   setInterval(tickTime, 30000);
 
-  // 自动检测新版本：云端每小时构建，页面无需手动刷新
+  // 打开即更新：页面内容超过 30 分钟未更新时，用受限令牌触发一次云端重建
+  var TRIGGER_TOKEN = "__TRIGGER_TOKEN__";
+  var TRIGGER_REPO = "tracyzhao2018/daily-brief";
+  var TRIGGER_WF = "daily.yml";
+  var TRIGGER_MAX_AGE = 1800;
+  function fastPoll() {
+    var n = 0;
+    var timer = setInterval(function () {
+      checkUpdate();
+      n++;
+      if (n >= 36) { clearInterval(timer); tickTime(); }
+    }, 10000);
+  }
+  function triggerBuild() {
+    if (!TRIGGER_TOKEN) { return; }
+    var box = document.getElementById('liveStamp');
+    if (!box) { return; }
+    var ts = parseInt(box.getAttribute('data-ts'), 10);
+    if (!ts) { return; }
+    if (Math.floor(Date.now() / 1000) - ts < TRIGGER_MAX_AGE) { return; }
+    try {
+      var last = parseInt(localStorage.getItem('brief-trigger-at') || '0', 10);
+      if (Date.now() - last < 600000) { return; }
+      localStorage.setItem('brief-trigger-at', String(Date.now()));
+    } catch (e) {}
+    box.textContent = '正在更新最新资讯…';
+    fetch('https://api.github.com/repos/' + TRIGGER_REPO + '/actions/workflows/' + TRIGGER_WF + '/dispatches', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'token ' + TRIGGER_TOKEN,
+        'Accept': 'application/vnd.github+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ ref: 'main' })
+    }).then(function (r) {
+      if (r.status === 204) { fastPoll(); } else { tickTime(); }
+    }).catch(function () { tickTime(); });
+  }
+
+  // 自动检测新版本，页面无需手动刷新
   var lastTag = null, checking = false;
   function reloadKeepState() {
     try {
@@ -1733,6 +1772,7 @@ JS = u"""
   if (location.protocol === 'http:' || location.protocol === 'https:') {
     checkUpdate();
     setInterval(checkUpdate, 60000);
+    triggerBuild();
   }
 })();
 """
@@ -1939,6 +1979,8 @@ def render_html(columns, latest, counts, stamp, stamp_full, dt, focus, now_ts):
         (u"__HOT__", hot),
         (u"__STAMP__", stamp_full),
         (u"__NOWTS__", str(int(now_ts))),
+        # 页面内置的只读触发令牌（仅 Actions:write），用于“有人打开即更新”
+        (u"__TRIGGER_TOKEN__", os.environ.get("TRIGGER_TOKEN", u"")),
         (u"__TOTAL__", str(total)),
         (u"__SOURCES__", esc(u" · ".join(sources))),
     ]

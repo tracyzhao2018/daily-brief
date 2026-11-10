@@ -39,6 +39,8 @@ jobs:
 
       - name: 构建静态站点
         run: python build_site.py
+        env:
+          TRIGGER_TOKEN: ${{ secrets.TRIGGER_TOKEN }}
 
       - name: 配置 Pages
         uses: actions/configure-pages@v5
